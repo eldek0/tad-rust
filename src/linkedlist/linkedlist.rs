@@ -1,7 +1,7 @@
 use std::fmt::Display;
 
 use crate::linkedlist::node::Node;
-use crate::linkedlist::traits::linked_list_traits::LinkedlistTrait;
+use crate::linkedlist::traits::linkedlist_traits::LinkedlistTrait;
 
 pub struct Linkedlist<T>{
     first:Option<Box<Node<T>>>,
@@ -11,6 +11,14 @@ pub struct Linkedlist<T>{
 impl <T> LinkedlistTrait<T> for Linkedlist<T> {
     fn new()-> Linkedlist<T> {
         Linkedlist{first:None, size:0}
+    }
+
+    fn new_from(values: Vec<T>)->Linkedlist<T> {
+        let mut list = Linkedlist::new();
+        for value in values{
+            list.add(value);
+        }
+        list
     }
 
     fn add(&mut self, value: T){
@@ -29,11 +37,39 @@ impl <T> LinkedlistTrait<T> for Linkedlist<T> {
         self.size += 1;
     }
     
-    fn remove(&mut self, index: usize) {
-        todo!()
+    fn remove(&mut self, index: usize) -> Result<(), String>{
+        if index >= self.size(){
+            return Err(String::from("Index out of bounds error"));
+        }
+
+        if index == 0 {
+            self.first = self.first.take().unwrap().next;
+        }
+        else if index == self.size() - 1 {
+            let last = self.get_node_mut(self.size() - 2);
+            last.unwrap().next = None;
+        }
+        else {
+            let node_before = self.get_node_mut(index-1).unwrap();
+            let node_to_remove = node_before.next.take().unwrap();
+            node_before.next = node_to_remove.next;
+        }
+
+        self.size -= 1;
+        Ok(())
+    }
+
+    fn get(&self, index: usize) -> Result<&T, String> {
+        Ok(&self.get_node(index).unwrap().value)
     }
     
-    fn get(&self, index: usize) -> Result<&T, String> {
+    fn size(&self) -> usize {
+        return self.size;
+    }
+}
+
+impl <T> Linkedlist<T>{
+    fn get_node(&self, index: usize) -> Result<&Node<T>, String>{
         if index >= self.size{
             return Err(String::from("Index out of bounds error"));
         }
@@ -43,11 +79,20 @@ impl <T> LinkedlistTrait<T> for Linkedlist<T> {
             temp = temp.next.as_ref().unwrap();
         }
 
-        Ok(&temp.value)
+        Ok(&temp)
     }
-    
-    fn size(&self) -> usize {
-        return self.size;
+
+    fn get_node_mut(&mut self, index: usize) -> Result<&mut Node<T>, String>{
+        if index >= self.size{
+            return Err(String::from("Index out of bounds error"));
+        }
+
+        let mut temp = self.first.as_mut().unwrap();
+        for _ in 0..index {
+            temp = temp.next.as_mut().unwrap();
+        }
+
+        Ok(temp)
     }
 }
 

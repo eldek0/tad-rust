@@ -1,1 +1,1 @@
-pub mod linked_list_traits;
+pub mod linkedlist_traits;
