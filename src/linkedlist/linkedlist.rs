@@ -1,4 +1,4 @@
-use std::fmt::{Debug, Display};
+use std::fmt::{Debug};
 
 use crate::linkedlist::node::Node;
 use crate::linkedlist::traits::linkedlist_traits::LinkedlistTrait;

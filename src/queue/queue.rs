@@ -1,4 +1,4 @@
-use std::fmt::{Debug, Display, Formatter};
+use std::fmt::{Debug, Formatter};
 use crate::linkedlist::linkedlist::Linkedlist;
 use crate::linkedlist::traits::linkedlist_traits::LinkedlistTrait;
 use crate::queue::traits::queue_traits::QueueTrait;

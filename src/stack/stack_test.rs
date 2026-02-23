@@ -24,16 +24,14 @@ mod stack_test{
     }
 
     #[test]
-    #[should_panic]
-    fn pop_empty_panic(){
+    fn pop_empty(){
         let mut stack: Stack<i16> = Stack::new();
-        let _ = stack.pop().unwrap();
+        assert!(stack.pop().is_err());
     }
 
     #[test]
-    #[should_panic]
     fn peek_empty_panic(){
         let stack: Stack<i16> = Stack::new();
-        let _ = stack.peek().unwrap();
+        assert!(stack.peek().is_err());
     }
 }

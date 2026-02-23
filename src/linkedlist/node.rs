@@ -1,4 +1,4 @@
-use std::fmt::Display;
+use std::fmt::{Debug};
 
 pub struct Node<T>{
     pub value:T,
@@ -21,8 +21,8 @@ impl <T:PartialEq> PartialEq for Node<T>{
     }
 }
 
-impl <T:Display> Display for Node<T>{
+impl <T:Debug> Debug for Node<T>{
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        return write!(f, "Node({})", self.value);
+        return write!(f, "Node({:?})", self.value);
     }
 }

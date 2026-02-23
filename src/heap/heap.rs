@@ -1,5 +1,5 @@
 use std::collections::VecDeque;
-use std::fmt::{Debug, Display, Formatter};
+use std::fmt::{Debug, Formatter};
 use crate::heap::node::Node;
 use crate::heap::traits::heap_traits::HeapTrait;
 

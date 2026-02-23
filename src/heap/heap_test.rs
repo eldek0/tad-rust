@@ -101,7 +101,7 @@ mod test{
         let mut heap: Heap<i8, &str> = Heap::new(false, 10);
 
         heap.push(5, "A");
-        heap.pop();
+        assert!(heap.pop().is_ok());
         heap.push(8, "B");
 
         assert_eq!(heap.peek().unwrap().0, &8);

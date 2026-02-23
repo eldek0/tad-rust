@@ -1,5 +1,3 @@
-use crate::stack::stack::Stack;
-
 #[cfg(test)]
 mod test{
     use crate::queue::queue::Queue;
@@ -27,16 +25,14 @@ mod test{
     }
 
     #[test]
-    #[should_panic]
-    fn pop_empty_panic(){
+    fn pop_empty(){
         let mut queue: Queue<i16> = Queue::new();
-        let _ = queue.pop().unwrap();
+        assert!(queue.pop().is_err());
     }
 
     #[test]
-    #[should_panic]
     fn peek_empty_panic(){
         let queue: Queue<i16> = Queue::new();
-        let _ = queue.peek().unwrap();
+        assert!(queue.peek().is_err());
     }
 }

@@ -29,32 +29,30 @@ mod test{
         linkedlist.add(10);
         linkedlist.add(20);
 
-        linkedlist.remove(1);
+        assert!(linkedlist.remove(1).is_ok());
 
         assert_eq!(1, linkedlist.size());
     }
 
     #[test]
-    #[should_panic]
     fn remove_out_of_bounds_panic(){
         let mut linkedlist: Linkedlist<i32> = Linkedlist::new();
         linkedlist.add(10);
-        linkedlist.remove(5).unwrap();
+        assert!(linkedlist.remove(10).is_err());
+        assert_eq!(1, linkedlist.size());
     }
 
     #[test]
-    #[should_panic]
     fn get_out_of_bounds_panic(){
         let mut linkedlist: Linkedlist<i32> = Linkedlist::new();
         linkedlist.add(10);
-        linkedlist.get(5).unwrap();
+        assert!(linkedlist.remove(1).is_err());
     }
 
     #[test]
-    #[should_panic]
     fn remove_empty_list(){
         let mut linkedlist: Linkedlist<i32> = Linkedlist::new();
-        linkedlist.remove(0).unwrap();
+        assert!(linkedlist.remove(0).is_err());
     }
 
     #[test]

@@ -1,5 +1,5 @@
 use std::cmp::Ordering;
-use std::fmt::{Debug, Display};
+use std::fmt::{Debug};
 
 pub struct Node<K, T> {
     pub key:K,
