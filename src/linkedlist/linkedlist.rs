@@ -3,12 +3,12 @@ use std::fmt::Display;
 use crate::linkedlist::node::Node;
 use crate::linkedlist::traits::linkedlist_traits::LinkedlistTrait;
 
-pub struct Linkedlist<T>{
+pub struct Linkedlist<T:Clone>{
     first:Option<Box<Node<T>>>,
     size:usize
 }
 
-impl <T> LinkedlistTrait<T> for Linkedlist<T> {
+impl <T: Clone> LinkedlistTrait<T> for Linkedlist<T> {
     fn new()-> Linkedlist<T> {
         Linkedlist{first:None, size:0}
     }
@@ -68,7 +68,7 @@ impl <T> LinkedlistTrait<T> for Linkedlist<T> {
     }
 }
 
-impl <T> Linkedlist<T>{
+impl <T: Clone> Linkedlist<T>{
     fn get_node(&self, index: usize) -> Result<&Node<T>, String>{
         if index >= self.size{
             return Err(String::from("Index out of bounds error"));
@@ -96,7 +96,7 @@ impl <T> Linkedlist<T>{
     }
 }
 
-impl <T:Display> Display for Linkedlist<T>{
+impl <T:Display + Clone> Display for Linkedlist<T>{
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut temp = self.first.as_ref();
         write!(f, "[")?;

@@ -1,6 +1,6 @@
 use crate::linkedlist::linkedlist::Linkedlist;
 
-pub trait LinkedlistTrait<T>{
+pub trait LinkedlistTrait<T:Clone>{
     fn new()->Linkedlist<T>;
     fn new_from(values: Vec<T>)->Linkedlist<T>;
     fn add(&mut self, value: T);

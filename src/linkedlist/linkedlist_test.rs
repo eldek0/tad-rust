@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod test{
-    use crate::linkedlist::{self, linkedlist::Linkedlist, traits::linkedlist_traits::LinkedlistTrait};
+    use crate::linkedlist::{linkedlist::Linkedlist, traits::linkedlist_traits::LinkedlistTrait};
 
     #[test]
     fn create(){
