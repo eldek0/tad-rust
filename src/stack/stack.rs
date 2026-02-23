@@ -1,4 +1,4 @@
-use std::fmt::Display;
+use std::fmt::{Debug, Display};
 
 use crate::{linkedlist::{linkedlist::Linkedlist, traits::linkedlist_traits::LinkedlistTrait}, stack::traits::stack_traits::StackTrait};
 
@@ -42,9 +42,9 @@ impl <T:Clone> StackTrait<T> for Stack<T> {
     }
 }
 
-impl <T:Display + Clone> Display for Stack<T>{
+impl <T:Debug + Clone> Debug for Stack<T>{
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.elements)?;
+        write!(f, "{:?}", self.elements)?;
         Ok(())
     }
 }

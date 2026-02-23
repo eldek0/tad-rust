@@ -1,4 +1,4 @@
-use std::fmt::Display;
+use std::fmt::{Debug, Display};
 
 use crate::linkedlist::node::Node;
 use crate::linkedlist::traits::linkedlist_traits::LinkedlistTrait;
@@ -47,10 +47,10 @@ impl <T: Clone> LinkedlistTrait<T> for Linkedlist<T> {
         }
         else if index == self.size() - 1 {
             let last = self.get_node_mut(self.size() - 2);
-            last.unwrap().next = None;
+            last.next = None;
         }
         else {
-            let node_before = self.get_node_mut(index-1)?;
+            let node_before = self.get_node_mut(index-1);
             let node_to_remove = node_before.next.take().unwrap();
             node_before.next = node_to_remove.next;
         }
@@ -60,7 +60,10 @@ impl <T: Clone> LinkedlistTrait<T> for Linkedlist<T> {
     }
 
     fn get(&self, index: usize) -> Result<&T, String> {
-        Ok(&self.get_node(index)?.value)
+        if index >= self.size(){
+            return Err(String::from("Index out of bounds error"));
+        }
+        Ok(&self.get_node(index).value)
     }
     
     fn size(&self) -> usize {
@@ -69,9 +72,9 @@ impl <T: Clone> LinkedlistTrait<T> for Linkedlist<T> {
 }
 
 impl <T: Clone> Linkedlist<T>{
-    fn get_node(&self, index: usize) -> Result<&Node<T>, String>{
+    fn get_node(&self, index: usize) -> &Node<T>{
         if index >= self.size{
-            return Err(String::from("Index out of bounds error"));
+            panic!("Index out of bounds error"); // for private fn is ok?
         }
 
         let mut temp = self.first.as_ref().unwrap();
@@ -79,12 +82,12 @@ impl <T: Clone> Linkedlist<T>{
             temp = temp.next.as_ref().unwrap();
         }
 
-        Ok(&temp)
+        &temp
     }
 
-    fn get_node_mut(&mut self, index: usize) -> Result<&mut Node<T>, String>{
+    fn get_node_mut(&mut self, index: usize) -> &mut Node<T>{
         if index >= self.size{
-            return Err(String::from("Index out of bounds error"));
+            panic!("Index out of bounds error");
         }
 
         let mut temp = self.first.as_mut().unwrap();
@@ -92,21 +95,21 @@ impl <T: Clone> Linkedlist<T>{
             temp = temp.next.as_mut().unwrap();
         }
 
-        Ok(temp)
+        temp
     }
 }
 
-impl <T:Display + Clone> Display for Linkedlist<T>{
+impl <T:Debug + Clone> Debug for Linkedlist<T>{
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut temp = self.first.as_ref();
         write!(f, "[")?;
         while let Some(node) = temp{
             if node.next.is_none(){
-                write!(f, "{}", node.value)?;
+                write!(f, "{:?}", node.value)?;
                 break;
             }
 
-            write!(f, "{}, ", node.value)?;
+            write!(f, "{:?}, ", node.value)?;
             temp = node.next.as_ref();
         }
         write!(f, "]")?;

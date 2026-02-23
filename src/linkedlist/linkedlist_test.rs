@@ -58,10 +58,9 @@ mod test{
     }
 
     #[test]
-    #[should_panic]
     fn get_empty_list(){
         let linkedlist: Linkedlist<i32> = Linkedlist::new();
-        linkedlist.get(0).unwrap();
+        assert!(linkedlist.get(0).is_err());
     }
 
     #[test]
@@ -79,10 +78,37 @@ mod test{
         linkedlist.add(20);
         linkedlist.add(30);
 
-        println!("{}", linkedlist);
+        println!("{:?}", linkedlist);
         
         assert_eq!(10, *linkedlist.get(0).unwrap());
         assert_eq!(20, *linkedlist.get(1).unwrap());
         assert_eq!(30, *linkedlist.get(2).unwrap());
     }
+    #[test]
+    fn remove_last_element() {
+        let mut linkedlist: Linkedlist<i32> = Linkedlist::new();
+        linkedlist.add(10);
+        linkedlist.add(20);
+        linkedlist.add(30);
+
+        linkedlist.remove(2).unwrap();
+
+        assert_eq!(2, linkedlist.size());
+        assert_eq!(10, *linkedlist.get(0).unwrap());
+        assert_eq!(20, *linkedlist.get(1).unwrap());
+    }
+    #[test]
+    fn remove_middle_element() {
+        let mut linkedlist: Linkedlist<i32> = Linkedlist::new();
+        linkedlist.add(10);
+        linkedlist.add(20);
+        linkedlist.add(30);
+
+        linkedlist.remove(1).unwrap();
+
+        assert_eq!(2, linkedlist.size());
+        assert_eq!(10, *linkedlist.get(0).unwrap());
+        assert_eq!(30, *linkedlist.get(1).unwrap());
+    }
+
 }

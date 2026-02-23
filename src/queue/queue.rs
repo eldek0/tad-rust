@@ -1,4 +1,4 @@
-use std::fmt::{Display, Formatter};
+use std::fmt::{Debug, Display, Formatter};
 use crate::linkedlist::linkedlist::Linkedlist;
 use crate::linkedlist::traits::linkedlist_traits::LinkedlistTrait;
 use crate::queue::traits::queue_traits::QueueTrait;
@@ -41,8 +41,8 @@ impl<T:Clone> QueueTrait<T> for Queue<T> {
     }
 }
 
-impl<T:Display + Clone> Display for Queue<T> {
+impl<T:Debug + Clone> Debug for Queue<T> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.elements)
+        write!(f, "{:?}", self.elements)
     }
 }
