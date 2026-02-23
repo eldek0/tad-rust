@@ -4,10 +4,10 @@ A project for learning data structures in Rust.
 
 ## Implemented
 - Linked List
+- Stack
+- Queue
 
 ## Todo
-- [ ] Stack
-- [ ] Queue
 - [ ] Heap
 - [ ] Binary Tree
 - [ ] HashMap

@@ -22,7 +22,7 @@ impl <T:Clone> StackTrait<T> for Stack<T> {
         }
 
         let index = self.elements.size()-1;
-        let last = self.elements.get(index).unwrap().clone();
+        let last = self.elements.get(index)?.clone();
         let _ = self.elements.remove(index);
         return Ok(last);
     }
@@ -33,7 +33,7 @@ impl <T:Clone> StackTrait<T> for Stack<T> {
         }
         
         let index = self.elements.size()-1;
-        let last = self.elements.get(index).unwrap().clone();
+        let last = self.elements.get(index)?.clone();
         return Ok(last);
     }
 

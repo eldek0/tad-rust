@@ -50,7 +50,7 @@ impl <T: Clone> LinkedlistTrait<T> for Linkedlist<T> {
             last.unwrap().next = None;
         }
         else {
-            let node_before = self.get_node_mut(index-1).unwrap();
+            let node_before = self.get_node_mut(index-1)?;
             let node_to_remove = node_before.next.take().unwrap();
             node_before.next = node_to_remove.next;
         }
@@ -60,7 +60,7 @@ impl <T: Clone> LinkedlistTrait<T> for Linkedlist<T> {
     }
 
     fn get(&self, index: usize) -> Result<&T, String> {
-        Ok(&self.get_node(index).unwrap().value)
+        Ok(&self.get_node(index)?.value)
     }
     
     fn size(&self) -> usize {
