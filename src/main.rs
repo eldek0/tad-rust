@@ -11,6 +11,7 @@ mod stack;
 mod linkedlist;
 mod queue;
 mod heap;
+mod binary_tree;
 
 fn main() {
     let mut stack: Stack<i128> = Stack::new();
