@@ -7,9 +7,9 @@ A project for learning data structures in Rust.
 - Stack
 - Queue
 - Heap
+- Binary Tree
 
 ## Todo
-- [ ] Binary Tree
 - [ ] HashMap
 - [ ] Graph
 - [ ] Prefix Tree

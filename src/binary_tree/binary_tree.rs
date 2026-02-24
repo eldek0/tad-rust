@@ -40,7 +40,7 @@ impl <K:PartialEq + Clone + Debug, T> BinaryTreeTrait<K, T> for BinaryTree<K, T>
         let parent_node = self.first.
             as_mut().
             unwrap().
-            find(parent.clone().unwrap());
+            find_mut(parent.clone().unwrap());
 
         if parent_node.is_none() {
             return Err(format!("Parent key {:?} does not exist", parent));
@@ -49,43 +49,88 @@ impl <K:PartialEq + Clone + Debug, T> BinaryTreeTrait<K, T> for BinaryTree<K, T>
         if let Some(parent_node) = parent_node {
             if parent_node.left.is_none(){
                 parent_node.left = Some(Box::new(node));
+                return Ok(());
             }
-            else if parent_node.right.is_none(){
+            if parent_node.right.is_none(){
                 parent_node.right = Some(Box::new(node));
-            }
-            else {
-                return Err(format!("Parent key {:?} does not have childs", parent));
+                return Ok(());
             }
 
         }
-        Ok(())
+        return Err(format!("Parent key {:?} does not have childs", parent));
 
     }
 
-    fn delete(&mut self, key: K) -> Result<(K, T), String> {
-        todo!()
+    fn delete(&mut self, key: K) -> Result<(), String> {
+        if self.first.is_none(){
+            return Err(format!("Key {:?} does not exist", key));
+        }
+
+        if self.first.as_mut().unwrap().key == key{
+            self.first = None;
+            return Ok(());
+        }
+
+        if let Some(parent) = self.first.as_mut().unwrap().find_parent(key.clone()){
+            if let Some(left) = parent.left.as_ref(){
+                if left.key == key{
+                    parent.left = None;
+                    return Ok(());
+                }
+            }
+
+            if let Some(right) = parent.right.as_ref(){
+                if right.key == key{
+                    parent.right = None;
+                    return Ok(());
+                }
+            }
+        }
+
+        return Err(format!("Key {:?} does not exist", key));
     }
 
     fn find(&self, key: K) -> Result<(&K, &T), String> {
-        todo!()
+        if self.first.is_none(){
+            return Err(format!("Key {:?} does not exist", key));
+        }
+
+        let node = self.first.as_ref().unwrap().find(key.clone());
+        if node.is_none(){
+            return Err(format!("Key {:?} does not exist", key));
+        }
+        return Ok((&node.unwrap().key, &node.unwrap().value));
     }
 
     fn size(&self) -> usize {
-        Self::size_node(&self.first)
+        Self::size(&self.first)
     }
 
     fn count_leaves(&self) -> usize {
-        todo!()
+        Self::count_leaves(&self.first)
     }
 }
 
 impl <K:PartialEq, T> BinaryTree<K, T>{
-    fn size_node(root:&Option<Box<Node<K, T>>>) -> usize {
+    fn size(root:&Option<Box<Node<K, T>>>) -> usize {
         if root.is_none(){
             return 0;
         }
         if let Some(root) = root {
-            return 1 + Self::size_node(&root.right) + Self::size_node(&root.left);
+            return 1 + Self::size(&root.right) + Self::size(&root.left);
+        }
+        return 0;
+    }
+
+    fn count_leaves(root:&Option<Box<Node<K, T>>>) -> usize {
+        if root.is_none(){
+            return 0;
+        }
+        if let Some(root) = root {
+            if root.left.is_none() && root.right.is_none(){
+                return 1;
+            }
+            return Self::count_leaves(&root.left) + Self::count_leaves(&root.right);
         }
         return 0;
     }
@@ -93,6 +138,11 @@ impl <K:PartialEq, T> BinaryTree<K, T>{
 
 impl <K:Debug + PartialEq, T:Debug> Debug for BinaryTree<K,T>{
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f,"todo!")
+        if let Some(first) = &self.first {
+            return write!(f, "{:?}", first);
+        } 
+        
+        write!(f, "None")
     }
+    
 }
