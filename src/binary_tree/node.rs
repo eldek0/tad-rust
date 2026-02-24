@@ -96,7 +96,7 @@ impl<K: Debug + PartialEq, T: Debug> Node<K,T> {
             write!(f, "\t")?;
         }
 
-        writeln!(f, "({:?}, {:?})", self.key, self.value)?;
+        writeln!(f, "\t({:?}, {:?})", self.key, self.value)?;
 
         if let Some(left) = &self.left {
             left.fmt_with_level(f, level + 1)?;

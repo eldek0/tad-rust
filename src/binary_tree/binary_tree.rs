@@ -139,10 +139,14 @@ impl <K:PartialEq, T> BinaryTree<K, T>{
 impl <K:Debug + PartialEq, T:Debug> Debug for BinaryTree<K,T>{
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         if let Some(first) = &self.first {
-            return write!(f, "{:?}", first);
-        } 
-        
-        write!(f, "None")
+            writeln!(f, "{{")?;
+            write!(f, "{:?}", first)?;
+            writeln!(f, "}}")?;
+        } else {
+            write!(f, "{{}}")?;
+        }
+
+        Ok(())
     }
     
 }
