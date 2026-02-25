@@ -12,7 +12,21 @@ mod test{
     fn push(){
         let mut queue = Queue::new();
         queue.push(1);
-        assert_eq!(1, queue.peek().unwrap());
+        assert_eq!(1, queue.size());
+    }
+
+    #[test]
+    fn peek(){
+        let mut queue = Queue::new();
+        queue.push(1);
+        assert_eq!(&1, queue.peek().unwrap());
+    }
+
+    #[test]
+    fn peek_mut(){
+        let mut queue = Queue::new();
+        queue.push(1);
+        assert_eq!(&1, queue.peek_mut().unwrap());
     }
 
     #[test]

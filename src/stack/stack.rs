@@ -1,15 +1,15 @@
 use std::fmt::{Debug};
 
-use crate::{linkedlist::{linkedlist::Linkedlist, traits::linkedlist_traits::LinkedlistTrait}, stack::traits::stack_traits::StackTrait};
+use crate::{linked_list::{linked_list::LinkedList, traits::linked_list_traits::LinkedListTrait}, stack::traits::stack_traits::StackTrait};
 
 pub struct Stack<T:Clone> {
-    elements:Linkedlist<T>,
+    elements:LinkedList<T>,
     size:usize,
 }
 
 impl <T:Clone> StackTrait<T> for Stack<T> {
     fn new()->Stack<T> {
-        return Stack { elements: Linkedlist::new(), size: 0 }
+        return Stack { elements: LinkedList::new(), size: 0 }
     }
 
     fn push(&mut self, value:T) {
@@ -27,14 +27,23 @@ impl <T:Clone> StackTrait<T> for Stack<T> {
         return Ok(last);
     }
 
-    fn peek(&self)->Result<T, String> {
+    fn peek(&self)->Result<&T, String> {
         if self.elements.size() == 0 {
             return Err(String::from("Empty stack exception"));
         }
         
         let index = self.elements.size()-1;
-        let last = self.elements.get(index)?.clone();
-        return Ok(last);
+        let last = self.elements.get(index);
+        return last;
+    }
+
+    fn peek_mut(&mut self)->Result<&mut T, String> {
+        if self.elements.size() == 0 {
+            return Err(String::from("Empty stack exception"));
+        }
+        
+        let index = self.elements.size()-1;
+        return self.elements.get_mut(index);
     }
 
     fn size(&self)->usize {

@@ -102,6 +102,20 @@ impl <K:PartialEq + Clone + Debug, T> BinaryTreeTrait<K, T> for BinaryTree<K, T>
         return Ok((&node.unwrap().key, &node.unwrap().value));
     }
 
+    fn find_mut(&mut self, key: K) -> Result<(&K, &mut T), String> {
+        if self.first.is_none(){
+            return Err(format!("Key {:?} does not exist", key));
+        }
+
+        if let Some(node) = self.first.as_mut().unwrap().find_mut(key.clone()){
+            return Ok((&node.key, &mut node.value));
+        }
+        else{
+            return Err(format!("Key {:?} does not exist", key));
+        }
+        
+    }
+
     fn size(&self) -> usize {
         Self::size(&self.first)
     }

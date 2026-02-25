@@ -1,20 +1,20 @@
 use std::fmt::{Debug};
 
-use crate::linkedlist::node::Node;
-use crate::linkedlist::traits::linkedlist_traits::LinkedlistTrait;
+use crate::linked_list::node::Node;
+use crate::linked_list::traits::linked_list_traits::LinkedListTrait;
 
-pub struct Linkedlist<T:Clone>{
+pub struct LinkedList<T:Clone>{
     first:Option<Box<Node<T>>>,
     size:usize
 }
 
-impl <T: Clone> LinkedlistTrait<T> for Linkedlist<T> {
-    fn new()-> Linkedlist<T> {
-        Linkedlist{first:None, size:0}
+impl <T: Clone> LinkedListTrait<T> for LinkedList<T> {
+    fn new()-> LinkedList<T> {
+        LinkedList{first:None, size:0}
     }
 
-    fn new_from(values: Vec<T>)->Linkedlist<T> {
-        let mut list = Linkedlist::new();
+    fn new_from(values: Vec<T>)->LinkedList<T> {
+        let mut list = LinkedList::new();
         for value in values{
             list.add(value);
         }
@@ -65,13 +65,20 @@ impl <T: Clone> LinkedlistTrait<T> for Linkedlist<T> {
         }
         Ok(&self.get_node(index).value)
     }
+
+    fn get_mut(&mut self, index: usize) -> Result<&mut T, String> {
+        if index >= self.size(){
+            return Err(String::from("Index out of bounds error"));
+        }
+        Ok(&mut self.get_node_mut(index).value)
+    }
     
     fn size(&self) -> usize {
         return self.size;
     }
 }
 
-impl <T: Clone> Linkedlist<T>{
+impl <T: Clone> LinkedList<T>{
     fn get_node(&self, index: usize) -> &Node<T>{
         if index >= self.size{
             panic!("Index out of bounds error"); // for private fn is ok?
@@ -99,7 +106,7 @@ impl <T: Clone> Linkedlist<T>{
     }
 }
 
-impl <T:Debug + Clone> Debug for Linkedlist<T>{
+impl <T:Debug + Clone> Debug for LinkedList<T>{
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut temp = self.first.as_ref();
         write!(f, "[")?;

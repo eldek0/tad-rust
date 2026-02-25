@@ -7,6 +7,7 @@ mod test{
     fn create(){
         let heap:Heap<i8, String> = Heap::new(true, 10);
     }
+
     #[test]
     fn push_max(){
         let mut heap:Heap<i8, &str> = Heap::new(false, 10);
@@ -26,6 +27,25 @@ mod test{
         assert_eq!(heap.peek().unwrap(), (&6, &"Pasta"));
         assert_eq!(heap.size(), 2);
     }
+
+    #[test]
+    fn peek(){
+        let mut heap:Heap<i8, &str> = Heap::new(true, 10);
+
+        heap.push(6, "Pasta");
+        heap.push(10, "Pizza");
+        assert_eq!(heap.peek().unwrap(), (&6, &"Pasta"));
+    }
+
+    #[test]
+    fn peek_mut(){
+        let mut heap:Heap<i8, &str> = Heap::new(true, 10);
+
+        heap.push(6, "Pasta");
+        heap.push(10, "Pizza");
+        assert_eq!(heap.peek_mut().unwrap(), (&6, &mut "Pasta"));
+    }
+
     #[test]
     fn pop_max(){
         let mut heap:Heap<i8, &str> = Heap::new(true, 10);

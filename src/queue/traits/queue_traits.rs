@@ -2,6 +2,7 @@ pub trait QueueTrait<T>{
     fn new() -> Self;
     fn push(&mut self, value: T);
     fn pop(&mut self) -> Result<T, String>;
-    fn peek(&self) -> Result<T, String>;
+    fn peek(&self) -> Result<&T, String>;
+    fn peek_mut(&mut self) -> Result<&mut T, String>;
     fn size(&self) -> usize;
 }

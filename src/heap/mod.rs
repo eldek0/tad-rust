@@ -1,4 +1,4 @@
 pub mod traits;
 pub mod heap;
-mod node;
+pub mod node;
 mod heap_test;

@@ -11,7 +11,21 @@ mod stack_test{
     fn push(){
         let mut stack = Stack::new();
         stack.push(1);
-        assert_eq!(1, stack.peek().unwrap());
+        assert_eq!(1, stack.size());
+    }
+
+    #[test]
+    fn peek(){
+        let mut stack=Stack::new();
+        stack.push(1);
+        assert_eq!(&1, stack.peek().unwrap());
+    }
+
+    #[test]
+    fn peek_mut(){
+        let mut stack=Stack::new();
+        stack.push(1);
+        assert_eq!(&1, stack.peek_mut().unwrap());
     }
 
     #[test]

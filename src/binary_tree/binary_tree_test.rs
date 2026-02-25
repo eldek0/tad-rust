@@ -50,6 +50,16 @@ mod test{
     }
 
     #[test]
+    fn find_mut(){
+        let mut tree:BinaryTree<i16, i16> = BinaryTree::new();
+        assert!(tree.insert(1, 10, None).is_ok());
+        assert!(tree.insert(2, 50, Some(1)).is_ok());
+        assert!(tree.insert(3, 96, Some(2)).is_ok());
+
+        assert_eq!((&2, &mut 50), tree.find_mut(2).unwrap());
+    }
+
+    #[test]
     fn count_leaves(){
         let mut tree: BinaryTree<i16, i16> = BinaryTree::new();
 

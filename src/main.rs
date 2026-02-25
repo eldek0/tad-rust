@@ -1,17 +1,18 @@
 #![allow(dead_code)]
 #![allow(unused_variables)]
 
-use crate::{binary_tree::{binary_tree::BinaryTree, traits::binary_tree_traits::BinaryTreeTrait}, linkedlist::{linkedlist::Linkedlist, traits::linkedlist_traits::LinkedlistTrait}, stack::{stack::Stack, traits::stack_traits::StackTrait}};
+use crate::{binary_tree::{binary_tree::BinaryTree, traits::binary_tree_traits::BinaryTreeTrait}, linked_list::{linked_list::LinkedList, traits::linked_list_traits::LinkedListTrait}, stack::{stack::Stack, traits::stack_traits::StackTrait}};
 use crate::heap::heap::Heap;
 use crate::heap::traits::heap_traits::HeapTrait;
 use crate::queue::queue::Queue;
 use crate::queue::traits::queue_traits::QueueTrait;
 
 mod stack;
-mod linkedlist;
+mod linked_list;
 mod queue;
 mod heap;
 mod binary_tree;
+mod hash_map;
 
 fn main() {
     let mut stack: Stack<i128> = Stack::new();
@@ -19,7 +20,7 @@ fn main() {
     stack.push(54);
     println!("{:?}", stack);
 
-    let mut linkedlist:Linkedlist<i128> = Linkedlist::new();
+    let mut linkedlist:LinkedList<i128> = LinkedList::new();
     linkedlist.add(67);
     linkedlist.add(54);
     println!("{:?}", linkedlist);

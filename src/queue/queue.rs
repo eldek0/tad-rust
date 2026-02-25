@@ -1,16 +1,16 @@
 use std::fmt::{Debug, Formatter};
-use crate::linkedlist::linkedlist::Linkedlist;
-use crate::linkedlist::traits::linkedlist_traits::LinkedlistTrait;
+use crate::linked_list::linked_list::LinkedList;
+use crate::linked_list::traits::linked_list_traits::LinkedListTrait;
 use crate::queue::traits::queue_traits::QueueTrait;
 
 pub struct Queue<T:Clone> {
-    elements: Linkedlist<T>,
+    elements: LinkedList<T>,
     size: usize,
 }
 
 impl<T:Clone> QueueTrait<T> for Queue<T> {
     fn new() -> Self {
-        Queue { elements: Linkedlist::new(), size: 0 }
+        Queue { elements: LinkedList::new(), size: 0 }
     }
 
     fn push(&mut self, value: T) {
@@ -27,13 +27,20 @@ impl<T:Clone> QueueTrait<T> for Queue<T> {
         Ok(first)
     }
 
-    fn peek(&self) -> Result<T, String> {
+    fn peek(&self) -> Result<&T, String> {
         if self.size() == 0{
             return Err(String::from("Empty queue exception"));
         }
 
-        let first = self.elements.get(0)?.clone();
-        Ok(first)
+        return self.elements.get(0);
+    }
+
+    fn peek_mut(&mut self) -> Result<&mut T, String> {
+        if self.size() == 0{
+            return Err(String::from("Empty queue exception"));
+        }
+
+        return self.elements.get_mut(0);
     }
 
     fn size(&self) -> usize {

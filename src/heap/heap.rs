@@ -62,9 +62,19 @@ impl<K: PartialOrd, T> HeapTrait<K, T> for Heap<K, T>{
         Ok((&node.key, &node.value))
     }
 
+    fn peek_mut(&mut self) -> Result<(&K, &mut T), String> {
+        if self.size == 0 {
+            return Err(String::from("Index out of bounds error"));
+        }
+
+        let node = self.get_node_mut();
+        Ok((&node.key, &mut node.value))
+    }
+
     fn size(&self) -> usize {
         self.size
     }
+    
 }
 
 impl<K: PartialOrd, T> Heap<K, T>{
