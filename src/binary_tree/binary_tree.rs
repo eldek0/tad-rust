@@ -61,26 +61,26 @@ impl <K:PartialEq + Clone + Debug, T> BinaryTreeTrait<K, T> for BinaryTree<K, T>
 
     }
 
-    fn delete(&mut self, key: K) -> Result<(), String> {
+    fn delete(&mut self, key: &K) -> Result<(), String> {
         if self.first.is_none(){
             return Err(format!("Key {:?} does not exist", key));
         }
 
-        if self.first.as_mut().unwrap().key == key{
+        if self.first.as_mut().unwrap().key.eq(key){
             self.first = None;
             return Ok(());
         }
 
         if let Some(parent) = self.first.as_mut().unwrap().find_parent(key.clone()){
             if let Some(left) = parent.left.as_ref(){
-                if left.key == key{
+                if left.key.eq(key){
                     parent.left = None;
                     return Ok(());
                 }
             }
 
             if let Some(right) = parent.right.as_ref(){
-                if right.key == key{
+                if right.key.eq(key){
                     parent.right = None;
                     return Ok(());
                 }
@@ -90,7 +90,7 @@ impl <K:PartialEq + Clone + Debug, T> BinaryTreeTrait<K, T> for BinaryTree<K, T>
         return Err(format!("Key {:?} does not exist", key));
     }
 
-    fn find(&self, key: K) -> Result<(&K, &T), String> {
+    fn find(&self, key: &K) -> Result<(&K, &T), String> {
         if self.first.is_none(){
             return Err(format!("Key {:?} does not exist", key));
         }
@@ -102,7 +102,7 @@ impl <K:PartialEq + Clone + Debug, T> BinaryTreeTrait<K, T> for BinaryTree<K, T>
         return Ok((&node.unwrap().key, &node.unwrap().value));
     }
 
-    fn find_mut(&mut self, key: K) -> Result<(&K, &mut T), String> {
+    fn find_mut(&mut self, key: &K) -> Result<(&K, &mut T), String> {
         if self.first.is_none(){
             return Err(format!("Key {:?} does not exist", key));
         }

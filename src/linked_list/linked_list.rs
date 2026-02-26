@@ -1,14 +1,16 @@
 use std::fmt::{Debug};
 
+use crate::linked_list::iter::{IntoIter, Iter, IterMut};
 use crate::linked_list::node::Node;
 use crate::linked_list::traits::linked_list_traits::LinkedListTrait;
 
-pub struct LinkedList<T:Clone>{
+pub struct LinkedList<T>{
     first:Option<Box<Node<T>>>,
     size:usize
 }
 
-impl <T: Clone> LinkedListTrait<T> for LinkedList<T> {
+/// Public functions
+impl <T> LinkedListTrait<T> for LinkedList<T> {
     fn new()-> LinkedList<T> {
         LinkedList{first:None, size:0}
     }
@@ -16,12 +18,12 @@ impl <T: Clone> LinkedListTrait<T> for LinkedList<T> {
     fn new_from(values: Vec<T>)->LinkedList<T> {
         let mut list = LinkedList::new();
         for value in values{
-            list.add(value);
+            list.push(value);
         }
         list
     }
 
-    fn add(&mut self, value: T){
+    fn push(&mut self, value: T){
         if self.first.is_none(){
             self.first = Some(Box::new(Node::new(value)));
         }
@@ -76,9 +78,22 @@ impl <T: Clone> LinkedListTrait<T> for LinkedList<T> {
     fn size(&self) -> usize {
         return self.size;
     }
+
+    fn iter(&self) -> Iter<'_, T> {
+        Iter {
+            current: self.first.as_deref(),
+        }
+    }
+
+    fn iter_mut(&mut self) -> IterMut<'_, T> {
+        IterMut {
+            current: self.first.as_deref_mut(),
+        }
+    }
 }
 
-impl <T: Clone> LinkedList<T>{
+/// Private functions
+impl <T> LinkedList<T>{
     fn get_node(&self, index: usize) -> &Node<T>{
         if index >= self.size{
             panic!("Index out of bounds error"); // for private fn is ok?
@@ -106,7 +121,53 @@ impl <T: Clone> LinkedList<T>{
     }
 }
 
-impl <T:Debug + Clone> Debug for LinkedList<T>{
+/// Iterators
+impl<T> IntoIterator for LinkedList<T> {
+    type Item = T;
+    type IntoIter = IntoIter<T>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        IntoIter {current:self.first}
+    }
+}
+
+impl<'a, T> IntoIterator for &'a LinkedList<T> {
+    type Item = &'a T;
+    type IntoIter = Iter<'a, T>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        Iter {
+            current: self.first.as_deref(),
+        }
+    }
+}
+
+// mut
+impl<'a, T> IntoIterator for &'a mut LinkedList<T> {
+    type Item = &'a mut T;
+    type IntoIter = IterMut<'a, T>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        IterMut {
+            current: self.first.as_deref_mut(),
+        }
+    }
+}
+
+impl<T> FromIterator<T> for LinkedList<T> {
+    fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> Self {
+        let mut list = LinkedList::new();
+
+        for item in iter {
+            list.push(item);
+        }
+
+        list
+    }
+}
+
+/// Debug print
+impl <T:Debug> Debug for LinkedList<T>{
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut temp = self.first.as_ref();
         write!(f, "[")?;

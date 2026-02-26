@@ -23,7 +23,7 @@ mod test{
         let mut tree:BinaryTree<i16, i16> = BinaryTree::new();
         assert!(tree.insert(1, 10, None).is_ok());
         assert!(tree.insert(2, 50, Some(1)).is_ok());
-        assert!(tree.delete(2).is_ok());
+        assert!(tree.delete(&2).is_ok());
 
         assert_eq!(1, tree.size());
     }
@@ -34,7 +34,7 @@ mod test{
         assert!(tree.insert(1, 10, None).is_ok());
         assert!(tree.insert(2, 50, Some(1)).is_ok());
         assert!(tree.insert(3, 96, Some(2)).is_ok());
-        assert!(tree.delete(2).is_ok());
+        assert!(tree.delete(&2).is_ok());
 
         assert_eq!(1, tree.size());
     }
@@ -46,7 +46,7 @@ mod test{
         assert!(tree.insert(2, 50, Some(1)).is_ok());
         assert!(tree.insert(3, 96, Some(2)).is_ok());
 
-        assert_eq!((&2, &50), tree.find(2).unwrap());
+        assert_eq!((&2, &50), tree.find(&2).unwrap());
     }
 
     #[test]
@@ -56,7 +56,7 @@ mod test{
         assert!(tree.insert(2, 50, Some(1)).is_ok());
         assert!(tree.insert(3, 96, Some(2)).is_ok());
 
-        assert_eq!((&2, &mut 50), tree.find_mut(2).unwrap());
+        assert_eq!((&2, &mut 50), tree.find_mut(&2).unwrap());
     }
 
     #[test]
@@ -80,13 +80,13 @@ mod test{
     #[test]
     fn find_empty_tree() {
         let tree: BinaryTree<i32, i32> = BinaryTree::new();
-        assert!(tree.find(1).is_err());
+        assert!(tree.find(&1).is_err());
     }
 
     #[test]
     fn delete_empty_tree() {
         let mut tree: BinaryTree<i32, i32> = BinaryTree::new();
-        assert!(tree.delete(1).is_err());
+        assert!(tree.delete(&1).is_err());
         assert_eq!(0, tree.size());
     }
 
@@ -122,7 +122,7 @@ mod test{
         let mut tree: BinaryTree<i32, i32> = BinaryTree::new();
 
         tree.insert(1, 10, None).unwrap();
-        assert!(tree.find(999).is_err());
+        assert!(tree.find(&999).is_err());
         assert_eq!(1, tree.size());
     }
 
@@ -131,7 +131,7 @@ mod test{
         let mut tree: BinaryTree<i32, i32> = BinaryTree::new();
 
         tree.insert(1, 10, None).unwrap();
-        assert!(tree.delete(999).is_err());
+        assert!(tree.delete(&999).is_err());
         assert_eq!(1, tree.size());
     }
 

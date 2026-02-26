@@ -9,7 +9,7 @@ Heavily inspired by Java's implementations, so don't expect idiomatic Rust.
 - [x] Queue
 - [x] Heap
 - [x] Binary Tree
-- [ ] HashMap
+- [x] HashMap
 - [ ] Graph
 - [ ] Binary Search Tree (BST)
 - [ ] Prefix Tree

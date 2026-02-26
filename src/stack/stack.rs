@@ -13,7 +13,7 @@ impl <T:Clone> StackTrait<T> for Stack<T> {
     }
 
     fn push(&mut self, value:T) {
-        self.elements.add(value);
+        self.elements.push(value);
     }
 
     fn pop(&mut self)->Result<T, String> {

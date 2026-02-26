@@ -1,6 +1,8 @@
 #![allow(dead_code)]
 #![allow(unused_variables)]
 
+use std::collections::HashMap;
+
 use crate::{binary_tree::{binary_tree::BinaryTree, traits::binary_tree_traits::BinaryTreeTrait}, linked_list::{linked_list::LinkedList, traits::linked_list_traits::LinkedListTrait}, stack::{stack::Stack, traits::stack_traits::StackTrait}};
 use crate::heap::heap::Heap;
 use crate::heap::traits::heap_traits::HeapTrait;
@@ -21,8 +23,8 @@ fn main() {
     println!("{:?}", stack);
 
     let mut linkedlist:LinkedList<i128> = LinkedList::new();
-    linkedlist.add(67);
-    linkedlist.add(54);
+    linkedlist.push(67);
+    linkedlist.push(54);
     println!("{:?}", linkedlist);
 
     let mut queue:Queue<i128> = Queue::new();
@@ -40,4 +42,11 @@ fn main() {
     let _ = binary_tree.insert(3, "Ana", Some(1));
     let _ = binary_tree.insert(4, "Sophie", Some(2));
     println!("{:?}", binary_tree);
+
+    let mut hash_map:HashMap<&str, bool> = HashMap::new();
+    hash_map.insert("Australia", true);
+    hash_map.insert("United States", true);
+    hash_map.insert("Uruguay", true);
+    hash_map.insert("Antartica", false);
+    println!("{:?}", hash_map);
 }
