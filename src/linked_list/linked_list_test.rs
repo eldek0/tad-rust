@@ -8,22 +8,22 @@ mod test{
     }
 
     #[test]
-    fn new_from(){
-        let linkedlist: LinkedList<i32> = LinkedList::new_from(vec![1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    fn from_vec(){
+        let linkedlist: LinkedList<i32> = LinkedList::from_vec(vec![1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
         assert_eq!(9, linkedlist.size());
     }
 
     #[test]
     fn get(){
-        let linked_list:LinkedList<i16> = LinkedList::new_from(vec![1, 2, 3]);
+        let linked_list:LinkedList<i16> = LinkedList::from_vec(vec![1, 2, 3]);
 
         assert_eq!(&2, linked_list.get(1).unwrap());
     }
 
     #[test]
     fn get_mut(){
-        let mut linked_list:LinkedList<i16> = LinkedList::new_from(vec![1, 2, 3]);
+        let mut linked_list:LinkedList<i16> = LinkedList::from_vec(vec![1, 2, 3]);
 
         assert_eq!(&2, linked_list.get_mut(1).unwrap());
     }
@@ -46,6 +46,33 @@ mod test{
         assert!(linkedlist.remove(1).is_ok());
 
         assert_eq!(1, linkedlist.size());
+    }
+
+    #[test]
+    fn insert_at_start() {
+        let mut list: LinkedList<i32> = LinkedList::from_vec(vec![2, 3]);
+        assert!(list.insert(1, 0).is_ok());
+
+        let collected: Vec<i32> = list.iter().cloned().collect();
+        assert_eq!(collected, vec![1, 2, 3]);
+    }
+
+    #[test]
+    fn insert_middle() {
+        let mut list: LinkedList<i32> = LinkedList::from_vec(vec![1, 3, 4]);
+        assert!(list.insert(2, 1).is_ok());
+
+        let collected: Vec<i32> = list.iter().cloned().collect();
+        assert_eq!(collected, vec![1, 2, 3, 4]);
+    }
+
+    #[test]
+    fn test_insert_out_of_bounds() {
+        let mut list: LinkedList<i32> = LinkedList::from_vec(vec![1, 2, 3]);
+        let result = list.insert(4, 5);
+
+        assert!(result.is_err());
+        assert_eq!(list.size(), 3);
     }
 
     #[test]

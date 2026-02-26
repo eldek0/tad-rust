@@ -28,7 +28,7 @@ fn main() {
     println!("{:?}", linkedlist);
 
     let mut queue:Queue<i128> = Queue::new();
-    queue.push(35);
+    queue.enqueue(35);
     println!("{:?}", queue);
 
     let mut heap:Heap<i128, String> = Heap::new(true, 10);

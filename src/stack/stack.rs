@@ -1,6 +1,6 @@
-use std::fmt::{Debug};
+use std::{fmt::Debug};
 
-use crate::{linked_list::{linked_list::LinkedList, traits::linked_list_traits::LinkedListTrait}, stack::traits::stack_traits::StackTrait};
+use crate::{linked_list::{iter::IntoIter, linked_list::LinkedList, traits::linked_list_traits::LinkedListTrait}, stack::traits::stack_traits::StackTrait};
 
 pub struct Stack<T:Clone> {
     elements:LinkedList<T>,
@@ -12,8 +12,16 @@ impl <T:Clone> StackTrait<T> for Stack<T> {
         return Stack { elements: LinkedList::new(), size: 0 }
     }
 
+    fn from_vec(values: Vec<T>)->Stack<T> {
+        let mut stack = Stack::new();
+        for value in values{
+            stack.push(value);
+        }
+        stack
+    }
+
     fn push(&mut self, value:T) {
-        self.elements.push(value);
+        self.elements.insert(value, 0).ok();
     }
 
     fn pop(&mut self)->Result<T, String> {
@@ -21,10 +29,9 @@ impl <T:Clone> StackTrait<T> for Stack<T> {
             return Err(String::from("Empty stack exception"));
         }
 
-        let index = self.elements.size()-1;
-        let last = self.elements.get(index)?.clone();
-        let _ = self.elements.remove(index);
-        return Ok(last);
+        let first = self.elements.get(0)?.clone();
+        let _ = self.elements.remove(0);
+        return Ok(first);
     }
 
     fn peek(&self)->Result<&T, String> {
@@ -48,6 +55,15 @@ impl <T:Clone> StackTrait<T> for Stack<T> {
 
     fn size(&self)->usize {
         return self.elements.size();
+    }
+}
+
+impl<T: Clone> IntoIterator for Stack<T> {
+    type Item = T;
+    type IntoIter = IntoIter<T>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.elements.into_iter()
     }
 }
 

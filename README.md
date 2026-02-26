@@ -17,9 +17,9 @@ Heavily inspired by Java's implementations, so don't expect idiomatic Rust.
 ## Features
 - [x] Debug
 - [ ] Custom errors with thiserror
-- [ ] IntoIterator (for)
-- [ ] FromIterator (for with collect)
+- [x] IntoIterator (for)
+- [x] FromIterator (for with collect)
 - [x] Add get_mut/peek_mut to the structures
-- [ ] Make a stack, linkedlist and queue from a Vec! with ::from
+- [x] Make a stack, linkedlist and queue from a Vec! with ::from_vec
 - [ ] Documentation
 - [ ] Example folder with demo

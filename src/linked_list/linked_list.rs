@@ -15,7 +15,7 @@ impl <T> LinkedListTrait<T> for LinkedList<T> {
         LinkedList{first:None, size:0}
     }
 
-    fn new_from(values: Vec<T>)->LinkedList<T> {
+    fn from_vec(values: Vec<T>)->LinkedList<T> {
         let mut list = LinkedList::new();
         for value in values{
             list.push(value);
@@ -24,19 +24,34 @@ impl <T> LinkedListTrait<T> for LinkedList<T> {
     }
 
     fn push(&mut self, value: T){
+        self.insert(value, self.size()).ok();
+    }
+
+    fn insert(&mut self, value: T, index: usize)-> Result<(), String> {
+        if index > self.size{
+            return Err(format!("Index {:?} out of bounds", index));
+        }
+
+        let mut node = Node::new(value);
         if self.first.is_none(){
-            self.first = Some(Box::new(Node::new(value)));
+            self.first = Some(Box::new(node));
+        }
+        else if index == 0{
+            node.next = self.first.take();
+            self.first = Some(Box::new(node));
         }
         else{
-            // Adds a value to next of first
             let mut temp = self.first.as_mut().unwrap(); // it cant be none
-            while temp.next.is_some() {
+            for _ in 0..index - 1 {
                 temp = temp.next.as_mut().unwrap();
             }
-            temp.next = Some(Box::new(Node::new(value)));
+            let prev_next = temp.next.take();
+            node.next = prev_next;
+            temp.next = Some(Box::new(node));
         }
         
         self.size += 1;
+        Ok(())
     }
     
     fn remove(&mut self, index: usize) -> Result<(), String>{

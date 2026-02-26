@@ -1,4 +1,5 @@
 use std::fmt::{Debug, Formatter};
+use crate::linked_list::iter::IntoIter;
 use crate::linked_list::linked_list::LinkedList;
 use crate::linked_list::traits::linked_list_traits::LinkedListTrait;
 use crate::queue::traits::queue_traits::QueueTrait;
@@ -13,11 +14,19 @@ impl<T:Clone> QueueTrait<T> for Queue<T> {
         Queue { elements: LinkedList::new(), size: 0 }
     }
 
-    fn push(&mut self, value: T) {
+    fn from_vec(values: Vec<T>)->Queue<T> {
+        let mut queue: Queue<T> = Queue::new();
+        for value in values{
+            queue.enqueue(value);
+        }
+        queue
+    }
+
+    fn enqueue(&mut self, value: T) {
         self.elements.push(value);
     }
 
-    fn pop(&mut self) -> Result<T, String> {
+    fn dequeue(&mut self) -> Result<T, String> {
         if self.size() == 0{
             return Err(String::from("Empty queue exception"));
         }
@@ -45,6 +54,15 @@ impl<T:Clone> QueueTrait<T> for Queue<T> {
 
     fn size(&self) -> usize {
         self.elements.size()
+    }
+}
+
+impl<T: Clone> IntoIterator for Queue<T> {
+    type Item = T;
+    type IntoIter = IntoIter<T>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.elements.into_iter()
     }
 }
 
