@@ -11,7 +11,7 @@ Heavily inspired by Java's implementations, so don't expect idiomatic Rust.
 - [x] Binary Tree
 - [x] HashMap
 - [x] Graph
-- [ ] Binary Search Tree (BST)
+- [x] Binary Search Tree (BST)
 - [ ] Prefix Tree
 
 ## Features

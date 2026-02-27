@@ -3,7 +3,7 @@ use std::{fmt::Debug, hash::Hash};
 use crate::{graph::traits::graph_traits::GraphTrait, hash_map::{hash_map::HashMap, traits::hash_map_traits::HashMapTrait}, linked_list::{linked_list::LinkedList, traits::linked_list_traits::LinkedListTrait}};
 
 pub struct Graph<T:Hash+Clone>{
-    pub map:HashMap<T, HashMap<T, i32>>,
+    map:HashMap<T, HashMap<T, i32>>,
 }
 
 impl <T:Hash+Debug+Eq+Clone> GraphTrait<T> for Graph<T>  {

@@ -4,7 +4,7 @@ use crate::binary_tree::traits::binary_tree_traits::BinaryTreeTrait;
 use crate::binary_tree::traits::node_traits::NodeTrait;
 
 pub struct BinaryTree<K:PartialEq, T>{
-    first: Option<Box<Node<K, T>>>
+    pub(super) first: Option<Box<Node<K, T>>>
 }
 
 impl <K:PartialEq + Clone + Debug, T> BinaryTreeTrait<K, T> for BinaryTree<K, T> {

@@ -3,7 +3,7 @@
 
 use std::collections::HashMap;
 
-use crate::{binary_tree::{binary_tree::BinaryTree, traits::binary_tree_traits::BinaryTreeTrait}, graph::traits::graph_traits::GraphTrait, linked_list::{linked_list::LinkedList, traits::linked_list_traits::LinkedListTrait}, stack::{stack::Stack, traits::stack_traits::StackTrait}};
+use crate::{binary_tree::{binary_search_tree::BinarySearchTree, binary_tree::BinaryTree, traits::binary_tree_traits::BinaryTreeTrait}, graph::traits::graph_traits::GraphTrait, linked_list::{linked_list::LinkedList, traits::linked_list_traits::LinkedListTrait}, stack::{stack::Stack, traits::stack_traits::StackTrait}};
 use crate::heap::heap::Heap;
 use crate::heap::traits::heap_traits::HeapTrait;
 use crate::queue::queue::Queue;
@@ -39,10 +39,10 @@ fn main() {
     println!("{:?}", heap);
 
     let mut binary_tree:BinaryTree<i128, &str> = BinaryTree::new();
-    let _ = binary_tree.insert(1, "John", None);
-    let _ = binary_tree.insert(2, "Bob", Some(1));
-    let _ = binary_tree.insert(3, "Ana", Some(1));
-    let _ = binary_tree.insert(4, "Sophie", Some(2));
+    binary_tree.insert(1, "John", None).ok();
+    binary_tree.insert(2, "Bob", Some(1)).ok();
+    binary_tree.insert(3, "Ana", Some(1)).ok();
+    binary_tree.insert(4, "Sophie", Some(2)).ok();
     println!("{:?}", binary_tree);
 
     let mut hash_map:HashMap<&str, bool> = HashMap::new();
@@ -56,5 +56,12 @@ fn main() {
     graph.add_edge(10, 20, false, None);
     graph.add_edge(10, 40, true, None);
     graph.add_edge(30, 10, true, None);
-    println!("{:?}", graph)
+    println!("{:?}", graph);
+
+    let mut bst:BinarySearchTree<i32, i32> = BinarySearchTree::new();
+    bst.insert(10, 1).ok();
+    bst.insert(5, 2).ok();
+    bst.insert(4, 5).ok();
+    bst.insert(15, 54).ok();
+    println!("{:?}", bst);
 }
