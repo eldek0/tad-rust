@@ -9,7 +9,7 @@ pub struct Queue<T:Clone> {
     size: usize,
 }
 
-impl<T:Clone> QueueTrait<T> for Queue<T> {
+impl<T:Clone+PartialEq> QueueTrait<T> for Queue<T> {
     fn new() -> Self {
         Queue { elements: LinkedList::new(), size: 0 }
     }

@@ -10,7 +10,7 @@ pub struct LinkedList<T>{
 }
 
 /// Public functions
-impl <T> LinkedListTrait<T> for LinkedList<T> {
+impl <T:PartialEq> LinkedListTrait<T> for LinkedList<T> {
     fn new()-> LinkedList<T> {
         LinkedList{first:None, size:0}
     }
@@ -88,6 +88,17 @@ impl <T> LinkedListTrait<T> for LinkedList<T> {
             return Err(String::from("Index out of bounds error"));
         }
         Ok(&mut self.get_node_mut(index).value)
+    }
+
+    fn contains(&self, value:&T)->bool{
+        let mut next = self.first.as_deref();
+        while let Some(node) = next{
+            if &node.value == value{
+                return true;
+            }
+            next = node.next.as_deref();
+        }
+        return false;
     }
     
     fn size(&self) -> usize {
@@ -169,7 +180,7 @@ impl<'a, T> IntoIterator for &'a mut LinkedList<T> {
     }
 }
 
-impl<T> FromIterator<T> for LinkedList<T> {
+impl<T:PartialEq> FromIterator<T> for LinkedList<T> {
     fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> Self {
         let mut list = LinkedList::new();
 

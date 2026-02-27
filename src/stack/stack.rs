@@ -7,7 +7,7 @@ pub struct Stack<T:Clone> {
     size:usize,
 }
 
-impl <T:Clone> StackTrait<T> for Stack<T> {
+impl <T:Clone+PartialEq> StackTrait<T> for Stack<T> {
     fn new()->Stack<T> {
         return Stack { elements: LinkedList::new(), size: 0 }
     }

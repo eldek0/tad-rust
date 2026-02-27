@@ -39,7 +39,7 @@ mod test{
 
         assert_eq!(2, new.size());
         assert_eq!(10, new.capacity());
-        assert_eq!((&1, &15), new.get(&1).unwrap());
+        assert_eq!(&15, new.get(&1).unwrap());
     }
 
     #[test]
@@ -50,7 +50,7 @@ mod test{
 
         assert_eq!(2, new.size());
         assert_eq!(10, new.capacity());
-        assert_eq!((&1, &mut 15), new.get_mut(&1).unwrap());
+        assert_eq!(&mut 15, new.get_mut(&1).unwrap());
     }
 
     #[test]
@@ -61,7 +61,7 @@ mod test{
         assert!(map.put(1, 20).is_ok());
 
         assert_eq!(1, map.size());
-        assert_eq!((&1, &20), map.get(&1).unwrap());
+        assert_eq!(&20, map.get(&1).unwrap());
     }
 
     #[test]
@@ -79,13 +79,13 @@ mod test{
     }
 
     #[test]
-    fn contains() {
+    fn contains_key() {
         let mut map: HashMap<i16, i16> = HashMap::new(10);
 
         map.put(1, 10).unwrap();
 
-        assert!(map.contains(&1));
-        assert!(!map.contains(&2));
+        assert!(map.contains_key(&1));
+        assert!(!map.contains_key(&2));
     }
 
     #[test]
@@ -97,7 +97,22 @@ mod test{
 
         assert_eq!(2, map.size());
 
-        assert_eq!((&1, &10), map.get(&1).unwrap());
-        assert_eq!((&6, &20), map.get(&6).unwrap());
+        assert_eq!(&10, map.get(&1).unwrap());
+        assert_eq!(&20, map.get(&6).unwrap());
+    }
+
+    #[test]
+    fn for_loop_syntax() {
+        let mut hash_map: HashMap<i32, i32> = HashMap::new(10);
+        hash_map.put(1, 10).ok();
+        hash_map.put(2, 11).ok();
+        hash_map.put(3, 12).ok();
+
+        let mut sum = 0;
+        for (k, v) in hash_map.iter() {
+            sum += *v;
+        }
+
+        assert_eq!(sum, 33);
     }
 }

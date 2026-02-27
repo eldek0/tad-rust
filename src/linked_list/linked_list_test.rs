@@ -1,5 +1,7 @@
 #[cfg(test)]
 mod test{
+    use std::{vec};
+
     use crate::linked_list::{linked_list::LinkedList, traits::linked_list_traits::LinkedListTrait};
 
     #[test]
@@ -26,6 +28,16 @@ mod test{
         let mut linked_list:LinkedList<i16> = LinkedList::from_vec(vec![1, 2, 3]);
 
         assert_eq!(&2, linked_list.get_mut(1).unwrap());
+    }
+
+    #[test]
+    fn contains(){
+        let linked_list:LinkedList<i16> = LinkedList::from_vec(vec![10, 20, 30, 40]);
+        assert_eq!(true, linked_list.contains(&10));
+        assert_eq!(true, linked_list.contains(&20));
+        assert_eq!(true, linked_list.contains(&30));
+        assert_eq!(true, linked_list.contains(&40));
+        assert_eq!(false, linked_list.contains(&50));
     }
 
     #[test]

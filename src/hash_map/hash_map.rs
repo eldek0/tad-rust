@@ -42,7 +42,7 @@ impl <K: Hash + Debug + PartialEq, T> HashMapTrait<K, T> for HashMap<K, T>{
         Ok(())
     }
 
-    fn get(&self, key:&K)->Result<(&K, &T), String> {
+    fn get(&self, key:&K)->Result<&T, String> {
         let pos = self.hash_function(key);
 
         let bucket = self.hash
@@ -54,10 +54,10 @@ impl <K: Hash + Debug + PartialEq, T> HashMapTrait<K, T> for HashMap<K, T>{
             .find(|node| &node.key == key)
             .ok_or_else(|| format!("Value with key {:?} does not exist", key))?;
 
-        Ok((&node.key, &node.value))
+        Ok(&node.value)
     }
 
-    fn get_mut(&mut self, key:&K)->Result<(&K, &mut T), String> {
+    fn get_mut(&mut self, key:&K)->Result<&mut T, String> {
         let pos = self.hash_function(key);
 
         let bucket = self.hash
@@ -69,10 +69,10 @@ impl <K: Hash + Debug + PartialEq, T> HashMapTrait<K, T> for HashMap<K, T>{
             .find(|node| &node.key == key)
             .ok_or_else(|| format!("Value with key {:?} does not exist", key))?;
 
-        Ok((&node.key, &mut node.value))
+        Ok(&mut node.value)
     }
 
-    fn contains(&self, key:&K)->bool {
+    fn contains_key(&self, key:&K)->bool {
         let pos = self.hash_function(key);
 
         if let Some(bucket) = self.hash.get(pos) {
@@ -101,6 +101,16 @@ impl <K: Hash + Debug + PartialEq, T> HashMapTrait<K, T> for HashMap<K, T>{
     
     fn capacity(&self)->usize {
         return self.capacity;
+    }
+
+    fn iter(&self) -> Box<dyn Iterator<Item = (&K, &T)> + '_> {
+        Box::new(
+            self.hash
+                .iter()
+                .flat_map(|bucket| {
+                    bucket.iter().map(|node| (&node.key, &node.value))
+                })
+        )
     }
 }
 

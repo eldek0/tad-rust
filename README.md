@@ -10,7 +10,7 @@ Heavily inspired by Java's implementations, so don't expect idiomatic Rust.
 - [x] Heap
 - [x] Binary Tree
 - [x] HashMap
-- [ ] Graph
+- [x] Graph
 - [ ] Binary Search Tree (BST)
 - [ ] Prefix Tree
 

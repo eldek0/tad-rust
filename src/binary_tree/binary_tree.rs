@@ -155,7 +155,7 @@ impl <K:Debug + PartialEq, T:Debug> Debug for BinaryTree<K,T>{
         if let Some(first) = &self.first {
             writeln!(f, "{{")?;
             write!(f, "{:?}", first)?;
-            writeln!(f, "}}")?;
+            write!(f, "}}")?;
         } else {
             write!(f, "{{}}")?;
         }
