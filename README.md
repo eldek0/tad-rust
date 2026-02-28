@@ -12,7 +12,7 @@ Heavily inspired by Java's implementations, so don't expect idiomatic Rust.
 - [x] HashMap
 - [x] Graph
 - [x] Binary Search Tree (BST)
-- [ ] Prefix Tree
+- [x] Prefix Tree
 
 ## Features
 - [x] Debug

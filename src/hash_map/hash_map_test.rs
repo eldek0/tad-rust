@@ -10,10 +10,10 @@ mod test{
     }
 
     #[test]
-    fn put(){
+    fn insert(){
         let mut new:HashMap<i16, i16> = HashMap::new(10);
-        assert!(new.put(1, 10).is_ok());
-        assert!(new.put(2, 12).is_ok());
+        new.insert(1, 10);
+        new.insert(2, 12);
         println!("{}", new.size());
 
         assert_eq!(2, new.size());
@@ -23,9 +23,9 @@ mod test{
     #[test]
     fn delete(){
         let mut new:HashMap<i16, i16> = HashMap::new(10);
-        assert!(new.put(1, 15).is_ok());
-        assert!(new.put(2, 23).is_ok());
-        assert!(new.remove(&1).is_ok());
+        new.insert(1, 15);
+        new.insert(2, 23);
+        new.remove(&1).ok();
 
         assert_eq!(1, new.size());
         assert_eq!(10, new.capacity());
@@ -34,8 +34,8 @@ mod test{
     #[test]
     fn get(){
         let mut new:HashMap<i16, i16> = HashMap::new(10);
-        assert!(new.put(1, 15).is_ok());
-        assert!(new.put(2, 23).is_ok());
+        new.insert(1, 15);
+        new.insert(2, 23);
 
         assert_eq!(2, new.size());
         assert_eq!(10, new.capacity());
@@ -45,8 +45,8 @@ mod test{
     #[test]
     fn get_mut(){
         let mut new:HashMap<i16, i16> = HashMap::new(10);
-        assert!(new.put(1, 15).is_ok());
-        assert!(new.put(2, 23).is_ok());
+        new.insert(1, 15);
+        new.insert(2, 23);
 
         assert_eq!(2, new.size());
         assert_eq!(10, new.capacity());
@@ -57,8 +57,8 @@ mod test{
     fn overwrite_value() {
         let mut map: HashMap<i16, i16> = HashMap::new(10);
 
-        assert!(map.put(1, 10).is_ok());
-        assert!(map.put(1, 20).is_ok());
+        map.insert(1, 10);
+        map.insert(1, 20);
 
         assert_eq!(1, map.size());
         assert_eq!(&20, map.get(&1).unwrap());
@@ -82,7 +82,7 @@ mod test{
     fn contains_key() {
         let mut map: HashMap<i16, i16> = HashMap::new(10);
 
-        map.put(1, 10).unwrap();
+        map.insert(1, 10);
 
         assert!(map.contains_key(&1));
         assert!(!map.contains_key(&2));
@@ -92,8 +92,8 @@ mod test{
     fn collision_test() {
         let mut map: HashMap<i16, i16> = HashMap::new(5);
 
-        map.put(1, 10).unwrap(); // 1 % 5 == 1
-        map.put(6, 20).unwrap(); // 6 % 5 == 1
+        map.insert(1, 10); // 1 % 5 == 1
+        map.insert(6, 20); // 6 % 5 == 1
 
         assert_eq!(2, map.size());
 
@@ -104,9 +104,9 @@ mod test{
     #[test]
     fn for_loop_syntax() {
         let mut hash_map: HashMap<i32, i32> = HashMap::new(10);
-        hash_map.put(1, 10).ok();
-        hash_map.put(2, 11).ok();
-        hash_map.put(3, 12).ok();
+        hash_map.insert(1, 10);
+        hash_map.insert(2, 11);
+        hash_map.insert(3, 12);
 
         let mut sum = 0;
         for (k, v) in hash_map.iter() {

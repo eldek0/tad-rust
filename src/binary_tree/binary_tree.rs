@@ -123,6 +123,10 @@ impl <K:PartialEq + Clone + Debug, T> BinaryTreeTrait<K, T> for BinaryTree<K, T>
     fn count_leaves(&self) -> usize {
         Self::count_leaves(&self.first)
     }
+    
+    fn is_empty(&self)->bool {
+        return self.size() == 0;
+    }
 }
 
 impl <K:PartialEq, T> BinaryTree<K, T>{

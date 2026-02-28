@@ -10,4 +10,5 @@ pub trait GraphTrait<T:Hash+Eq+Clone> {
     fn get_neighbors(&self, vertex:&T)->LinkedList<T>;
     fn vertex_count(&self)->usize;
     fn edge_count(&self)->usize;
+    fn is_empty(&self)->bool;
 }

@@ -9,4 +9,5 @@ pub trait QueueTrait<T:Clone>{
     fn peek(&self) -> Result<&T, String>;
     fn peek_mut(&mut self) -> Result<&mut T, String>;
     fn size(&self) -> usize;
+    fn is_empty(&self)->bool;
 }

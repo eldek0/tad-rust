@@ -12,7 +12,7 @@ impl <T:Hash+Debug+Eq+Clone> GraphTrait<T> for Graph<T>  {
     }
 
     fn add_vertex(&mut self, vertex:T) {
-        self.map.put(vertex, HashMap::new(1024)).ok();
+        self.map.insert(vertex, HashMap::new(1024));
     }
 
     fn add_edge(&mut self, source:T, destination:T, bidireccional:bool, weight:Option<i32>) {
@@ -26,9 +26,9 @@ impl <T:Hash+Debug+Eq+Clone> GraphTrait<T> for Graph<T>  {
             self.add_vertex(destination.clone());
         }
 
-        self.map.get_mut(&source).unwrap().put(destination.clone(), w).ok();
+        self.map.get_mut(&source).unwrap().insert(destination.clone(), w);
         if bidireccional{
-            self.map.get_mut(&destination).unwrap().put(source, w).ok();
+            self.map.get_mut(&destination).unwrap().insert(source, w);
         }
     }
 
@@ -67,6 +67,10 @@ impl <T:Hash+Debug+Eq+Clone> GraphTrait<T> for Graph<T>  {
         }
 
         return count;
+    }
+    
+    fn is_empty(&self)->bool {
+        return self.map.is_empty();
     }
 }
 

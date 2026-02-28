@@ -1,9 +1,7 @@
 #![allow(dead_code)]
 #![allow(unused_variables)]
 
-use std::collections::HashMap;
-
-use crate::{binary_tree::{binary_search_tree::BinarySearchTree, binary_tree::BinaryTree, traits::binary_tree_traits::BinaryTreeTrait}, graph::traits::graph_traits::GraphTrait, linked_list::{linked_list::LinkedList, traits::linked_list_traits::LinkedListTrait}, stack::{stack::Stack, traits::stack_traits::StackTrait}};
+use crate::{binary_tree::{binary_search_tree::BinarySearchTree, binary_tree::BinaryTree, traits::binary_tree_traits::BinaryTreeTrait}, graph::traits::graph_traits::GraphTrait, hash_map::{hash_map::HashMap, traits::hash_map_traits::HashMapTrait}, linked_list::{linked_list::LinkedList, traits::linked_list_traits::LinkedListTrait}, prefix_tree::{prefix_tree::PrefixTree, traits::prefix_tree_trait::PrefixTreeTrait}, stack::{stack::Stack, traits::stack_traits::StackTrait}};
 use crate::heap::heap::Heap;
 use crate::heap::traits::heap_traits::HeapTrait;
 use crate::queue::queue::Queue;
@@ -17,6 +15,7 @@ mod heap;
 mod binary_tree;
 mod hash_map;
 mod graph;
+mod prefix_tree;
 
 fn main() {
     let mut stack: Stack<i128> = Stack::new();
@@ -45,7 +44,7 @@ fn main() {
     binary_tree.insert(4, "Sophie", Some(2)).ok();
     println!("{:?}", binary_tree);
 
-    let mut hash_map:HashMap<&str, bool> = HashMap::new();
+    let mut hash_map:HashMap<&str, bool> = HashMap::new(10);
     hash_map.insert("Australia", true);
     hash_map.insert("United States", true);
     hash_map.insert("Uruguay", true);
@@ -64,4 +63,14 @@ fn main() {
     bst.insert(4, 5).ok();
     bst.insert(15, 54).ok();
     println!("{:?}", bst);
+
+    let mut prefix:PrefixTree<char> = PrefixTree::new();
+    prefix.insert_string("Banana");
+    prefix.insert_string("Banena");
+
+    println!("{:?}", prefix);
+
+    let autocomplete = prefix.autocomplete_string("Ban");
+    
+    println!("{:?}", autocomplete);
 }

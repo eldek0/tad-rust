@@ -55,6 +55,10 @@ impl<T:Clone+PartialEq> QueueTrait<T> for Queue<T> {
     fn size(&self) -> usize {
         self.elements.size()
     }
+    
+    fn is_empty(&self)->bool {
+        return self.size() == 0;
+    }
 }
 
 impl<T: Clone> IntoIterator for Queue<T> {

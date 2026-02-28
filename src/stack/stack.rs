@@ -56,6 +56,10 @@ impl <T:Clone+PartialEq> StackTrait<T> for Stack<T> {
     fn size(&self)->usize {
         return self.elements.size();
     }
+    
+    fn is_empty(&self)->bool {
+        return self.size() == 0;
+    }
 }
 
 impl<T: Clone> IntoIterator for Stack<T> {

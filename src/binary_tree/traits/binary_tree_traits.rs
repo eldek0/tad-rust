@@ -6,4 +6,5 @@ pub trait BinaryTreeTrait<K, T>{
     fn find_mut(&mut self, key: &K) -> Result<(&K, &mut T), String>;
     fn size(&self)->usize;
     fn count_leaves(&self)->usize;
+    fn is_empty(&self)->bool;
 }

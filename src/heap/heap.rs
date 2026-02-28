@@ -75,6 +75,10 @@ impl<K: PartialOrd, T> HeapTrait<K, T> for Heap<K, T>{
         self.size
     }
     
+    fn is_empty(&self)->bool {
+        return self.size() == 0;
+    }
+    
 }
 
 impl<K: PartialOrd, T> Heap<K, T>{

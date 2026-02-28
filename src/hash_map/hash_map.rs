@@ -21,14 +21,14 @@ impl <K: Hash + Debug + PartialEq, T> HashMapTrait<K, T> for HashMap<K, T>{
         }
     }
 
-    fn put(&mut self, key:K, value:T)->Result<(), String> {
+    fn insert(&mut self, key:K, value:T){
         let pos = self.hash_function(&key);
         let bucket = &mut self.hash[pos];
 
         for node in bucket.iter_mut() {
             if node.key.eq(&key) {
                 node.value = value;
-                return Ok(());
+                return;
             }
         }
 
@@ -38,8 +38,6 @@ impl <K: Hash + Debug + PartialEq, T> HashMapTrait<K, T> for HashMap<K, T>{
         if self.size >= ((self.capacity as f32) * self.load_factor) as usize {
             self.resize();
         }
-
-        Ok(())
     }
 
     fn get(&self, key:&K)->Result<&T, String> {
@@ -112,6 +110,10 @@ impl <K: Hash + Debug + PartialEq, T> HashMapTrait<K, T> for HashMap<K, T>{
                 })
         )
     }
+    
+    fn is_empty(&self)->bool {
+        return self.size() == 0;
+    }
 }
 
 impl <K: Hash, T> HashMap<K, T>{
@@ -143,12 +145,18 @@ impl <K:Hash + Debug + PartialEq, T:Debug> Debug for HashMap<K, T>{
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{{")?;
 
+        let mut first = true;
         for (i, value) in self.hash.iter().enumerate() {
-            if i == self.size() - 1 {
-                write!(f, "{:?}", value)?;
-            } else {
-                write!(f, "{:?}, ", value)?;
+            if value.is_empty(){
+                continue;
             }
+            for v in value{
+                if !first {
+                    write!(f, ", ")?;
+                }
+                write!(f, "{:?}: {:?}", v.key, v.value)?;
+            }
+            first = false;
         }
 
         write!(f, "}}")?;

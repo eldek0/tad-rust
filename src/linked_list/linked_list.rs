@@ -4,6 +4,7 @@ use crate::linked_list::iter::{IntoIter, Iter, IterMut};
 use crate::linked_list::node::Node;
 use crate::linked_list::traits::linked_list_traits::LinkedListTrait;
 
+#[derive(PartialEq, Clone)]
 pub struct LinkedList<T>{
     first:Option<Box<Node<T>>>,
     size:usize
@@ -54,26 +55,32 @@ impl <T:PartialEq> LinkedListTrait<T> for LinkedList<T> {
         Ok(())
     }
     
-    fn remove(&mut self, index: usize) -> Result<(), String>{
+    fn remove(&mut self, index: usize) -> Result<T, String>{
         if index >= self.size(){
             return Err(String::from("Index out of bounds error"));
         }
 
+        let removed_value;
+
         if index == 0 {
-            self.first = self.first.take().unwrap().next;
+            let node = self.first.take().unwrap();
+            removed_value = node.value;
+            self.first = node.next;
         }
         else if index == self.size() - 1 {
             let last = self.get_node_mut(self.size() - 2);
-            last.next = None;
+            let node = last.next.take().unwrap();
+            removed_value = node.value;
         }
         else {
-            let node_before = self.get_node_mut(index-1);
+            let node_before = self.get_node_mut(index - 1);
             let node_to_remove = node_before.next.take().unwrap();
             node_before.next = node_to_remove.next;
+            removed_value = node_to_remove.value;
         }
 
         self.size -= 1;
-        Ok(())
+        Ok(removed_value)
     }
 
     fn get(&self, index: usize) -> Result<&T, String> {
@@ -115,6 +122,10 @@ impl <T:PartialEq> LinkedListTrait<T> for LinkedList<T> {
         IterMut {
             current: self.first.as_deref_mut(),
         }
+    }
+    
+    fn is_empty(&self)->bool {
+        return self.size() == 0;
     }
 }
 
