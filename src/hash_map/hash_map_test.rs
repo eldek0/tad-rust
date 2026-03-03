@@ -109,7 +109,7 @@ mod test{
         hash_map.insert(3, 12);
 
         let mut sum = 0;
-        for (k, v) in hash_map.iter() {
+        for (_, v) in hash_map.iter() {
             sum += *v;
         }
 

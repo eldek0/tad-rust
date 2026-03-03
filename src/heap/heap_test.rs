@@ -5,7 +5,7 @@ mod test{
 
     #[test]
     fn create(){
-        let heap:Heap<i8, String> = Heap::new(true, 10);
+        let _heap:Heap<i8, String> = Heap::new(true, 10);
     }
 
     #[test]

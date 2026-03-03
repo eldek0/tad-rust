@@ -6,7 +6,7 @@ mod test{
 
     #[test]
     fn create(){
-        let linkedlist: LinkedList<i32> = LinkedList::new();
+        let _: LinkedList<i32> = LinkedList::new();
     }
 
     #[test]

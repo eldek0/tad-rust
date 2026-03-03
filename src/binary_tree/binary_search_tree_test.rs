@@ -5,7 +5,7 @@ mod test {
 
     #[test]
     fn create() {
-        let tree: BinarySearchTree<i8, i8> = BinarySearchTree::new();
+        let _tree: BinarySearchTree<i8, i8> = BinarySearchTree::new();
     }
 
     #[test]

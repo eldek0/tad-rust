@@ -5,7 +5,7 @@ mod test{
 
     #[test]
     fn create(){
-        let queue:Queue<i16> = Queue::new();
+        let _queue:Queue<i16> = Queue::new();
     }
 
     #[test]

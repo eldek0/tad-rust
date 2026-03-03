@@ -16,10 +16,10 @@ Heavily inspired by Java's implementations, so don't expect idiomatic Rust.
 
 ## Features
 - [x] Debug
-- [ ] Custom errors with thiserror
+- [x] Custom errors with thiserror
 - [x] IntoIterator (for)
 - [x] FromIterator (for with collect)
 - [x] Add get_mut/peek_mut to the structures
 - [x] Make a stack, linkedlist and queue from a Vec! with ::from_vec
-- [ ] Documentation
-- [ ] Example folder with demo
+- [x] Documentation
+- [x] Example folder with demo

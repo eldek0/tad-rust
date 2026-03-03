@@ -1,8 +1,133 @@
 use std::collections::VecDeque;
 use std::fmt::{Debug, Formatter};
+use crate::heap::heap_error::HeapError;
 use crate::heap::node::Node;
 use crate::heap::traits::heap_traits::HeapTrait;
 
+/// A generic heap data structure with configurable min or max priority ordering.
+///
+/// Each element is stored as a `(priority, value)` pair. The heap can operate
+/// as a **min-heap** or a **max-heap** depending on the flag passed to [`Heap::new`].
+/// It also resizes automatically when capacity is exceeded.
+///
+/// # Examples
+///
+/// ## Creating a min-heap and a max-heap
+/// ```
+/// use eldek_tad::heap::{heap::Heap, traits::heap_traits::HeapTrait};
+/// 
+/// let min_heap: Heap<i8, String> = Heap::new(true, 10);  // min-heap
+/// let max_heap: Heap<i8, String> = Heap::new(false, 10); // max-heap
+/// ```
+///
+/// ## Pushing elements — min-heap keeps lowest priority on top
+/// ```
+/// use eldek_tad::heap::{heap::Heap, traits::heap_traits::HeapTrait};
+/// 
+/// let mut heap: Heap<i8, &str> = Heap::new(true, 10);
+/// heap.push(6, "Pasta");
+/// heap.push(10, "Pizza");
+///
+/// assert_eq!(heap.peek().unwrap(), (&6, &"Pasta")); // lowest priority on top
+/// assert_eq!(2, heap.size());
+/// ```
+///
+/// ## Pushing elements — max-heap keeps highest priority on top
+/// ```
+/// use eldek_tad::heap::{heap::Heap, traits::heap_traits::HeapTrait};
+/// 
+/// let mut heap: Heap<i8, &str> = Heap::new(false, 10);
+/// heap.push(6, "Pasta");
+/// heap.push(10, "Pizza");
+///
+/// assert_eq!(heap.peek().unwrap(), (&10, &"Pizza")); // highest priority on top
+/// ```
+///
+/// ## Popping elements (removes and returns the top)
+/// ```
+/// use eldek_tad::heap::{heap::Heap, traits::heap_traits::HeapTrait};
+/// 
+/// let mut heap: Heap<i8, &str> = Heap::new(true, 10); // min-heap
+/// heap.push(10, "Hamburger");
+/// heap.push(6, "Pasta");
+///
+/// assert_eq!(heap.pop().unwrap(), (6, "Pasta")); // lowest priority popped first
+/// assert_eq!(1, heap.size());
+/// ```
+///
+/// ## Popping in order from a max-heap
+/// ```
+/// use eldek_tad::heap::{heap::Heap, traits::heap_traits::HeapTrait};
+/// 
+/// let mut heap: Heap<i32, &str> = Heap::new(false, 10); // max-heap
+/// heap.push(5, "A");
+/// heap.push(10, "B");
+/// heap.push(3, "C");
+/// heap.push(8, "D");
+///
+/// assert_eq!(heap.pop().unwrap().0, 10);
+/// assert_eq!(heap.pop().unwrap().0, 8);
+/// assert_eq!(heap.pop().unwrap().0, 5);
+/// assert_eq!(heap.pop().unwrap().0, 3);
+/// ```
+///
+/// ## Peeking without consuming
+/// ```
+/// use eldek_tad::heap::{heap::Heap, traits::heap_traits::HeapTrait};
+/// 
+/// let mut heap: Heap<i8, &str> = Heap::new(true, 10);
+/// heap.push(6, "Pasta");
+/// heap.push(10, "Pizza");
+///
+/// assert_eq!(heap.peek().unwrap(), (&6, &"Pasta")); // does not remove the element
+/// assert_eq!(2, heap.size());
+/// ```
+///
+/// ## Handling errors on empty heap
+/// ```
+/// use eldek_tad::heap::{heap::Heap, traits::heap_traits::HeapTrait};
+/// 
+/// let mut heap: Heap<i8, &str> = Heap::new(true, 10);
+///
+/// assert!(heap.pop().is_err());
+/// assert!(heap.peek().is_err());
+/// ```
+///
+/// ## Automatic resizing
+/// ```
+/// use eldek_tad::heap::{heap::Heap, traits::heap_traits::HeapTrait};
+/// 
+/// let mut heap: Heap<i8, &str> = Heap::new(false, 2); // initial capacity of 2
+/// heap.push(10, "Pizza");
+/// heap.push(9, "Sushi");
+/// heap.push(8, "Tacos"); // exceeds initial capacity, resizes automatically
+///
+/// assert_eq!(3, heap.size());
+/// ```
+///
+/// ## Elements with the same priority are all stored
+/// ```
+/// use eldek_tad::heap::{heap::Heap, traits::heap_traits::HeapTrait};
+/// 
+/// let mut heap: Heap<i8, &str> = Heap::new(false, 10);
+/// heap.push(10, "A");
+/// heap.push(10, "B");
+/// heap.push(10, "C");
+///
+/// assert_eq!(3, heap.size());
+/// ```
+///
+/// ## Reuse after emptying
+/// ```
+/// use eldek_tad::heap::{heap::Heap, traits::heap_traits::HeapTrait};
+/// 
+/// let mut heap: Heap<i8, &str> = Heap::new(false, 10);
+/// heap.push(5, "A");
+/// heap.pop().unwrap();
+///
+/// heap.push(8, "B");
+/// assert_eq!(heap.peek().unwrap().0, &8);
+/// ```
 pub struct Heap<K: PartialOrd, T>{
     heap: VecDeque<Node<K, T>>,
     min: bool,
@@ -38,9 +163,9 @@ impl<K: PartialOrd, T> HeapTrait<K, T> for Heap<K, T>{
         }
     }
 
-    fn pop(&mut self) -> Result<(K, T), String> {
+    fn pop(&mut self) -> Result<(K, T), HeapError> {
         if self.size == 0 {
-            return Err(String::from("Index out of bounds error"));
+            return Err(HeapError::EmptyHeap);
         }
 
         let root:Node<K,T> = self.heap.pop_front().unwrap();
@@ -53,18 +178,18 @@ impl<K: PartialOrd, T> HeapTrait<K, T> for Heap<K, T>{
         Ok((root.key, root.value))
     }
 
-    fn peek(&self) -> Result<(&K, &T), String> {
+    fn peek(&self) -> Result<(&K, &T), HeapError> {
         if self.size == 0 {
-            return Err(String::from("Index out of bounds error"));
+            return Err(HeapError::EmptyHeap);
         }
 
         let node = self.get_node();
         Ok((&node.key, &node.value))
     }
 
-    fn peek_mut(&mut self) -> Result<(&K, &mut T), String> {
+    fn peek_mut(&mut self) -> Result<(&K, &mut T), HeapError> {
         if self.size == 0 {
-            return Err(String::from("Index out of bounds error"));
+            return Err(HeapError::EmptyHeap);
         }
 
         let node = self.get_node_mut();
@@ -124,13 +249,13 @@ impl<K: PartialOrd, T> Heap<K, T>{
 
     fn get_node(&self) -> &Node<K,T>{
         if self.size == 0{
-            panic!("Index out of bounds error");
+            panic!("{:?}", HeapError::EmptyHeap);
         }
         &self.heap[0]
     }
     fn get_node_mut(&mut self) -> &mut Node<K,T>{
         if self.size == 0{
-            panic!("Index out of bounds error");
+            panic!("{:?}", HeapError::EmptyHeap);
         }
         &mut self.heap[0]
     }

@@ -1,15 +1,91 @@
 use std::{fmt::Debug};
 
-use crate::{linked_list::{iter::IntoIter, linked_list::LinkedList, traits::linked_list_traits::LinkedListTrait}, stack::traits::stack_traits::StackTrait};
+use crate::{linked_list::{iter::IntoIter, linked_list::LinkedList, traits::linked_list_traits::LinkedListTrait}, stack::{stack_error::StackError, traits::stack_traits::StackTrait}};
 
+/// A generic stack data structure (LIFO - Last In, First Out).
+///
+/// # Examples
+///
+/// ## Creating a stack
+/// ```
+/// use eldek_tad::stack::{stack::Stack, traits::stack_traits::StackTrait};
+/// 
+/// let stack: Stack<i32> = Stack::new();
+/// ```
+///
+/// ## Creating from a vector
+/// ```
+/// use eldek_tad::stack::{stack::Stack, traits::stack_traits::StackTrait};
+/// 
+/// let stack: Stack<i16> = Stack::from_vec(vec![1, 2, 3]);
+/// assert_eq!(3, stack.size());
+/// ```
+///
+/// ## Pushing and popping elements
+/// ```
+/// use eldek_tad::stack::{stack::Stack, traits::stack_traits::StackTrait};
+/// 
+/// let mut stack = Stack::new();
+/// stack.push(10);
+/// stack.push(2);
+///
+/// assert_eq!(2, stack.pop().unwrap()); // returns the top element
+/// assert_eq!(1, stack.size());
+/// ```
+///
+/// ## Peeking without consuming
+/// ```
+/// use eldek_tad::stack::{stack::Stack, traits::stack_traits::StackTrait};
+/// 
+/// let mut stack = Stack::new();
+/// stack.push(1);
+///
+/// assert_eq!(&1, stack.peek().unwrap()); // does not remove the element
+/// assert_eq!(1, stack.size());
+/// ```
+///
+/// ## Handling errors on empty stack
+/// ```
+/// use eldek_tad::stack::{stack::Stack, traits::stack_traits::StackTrait};
+/// 
+/// let mut stack: Stack<i16> = Stack::new();
+///
+/// assert!(stack.pop().is_err());
+/// assert!(stack.peek().is_err());
+/// ```
+///
+/// ## Iterating (consumes the stack, top to bottom)
+/// ```
+/// use eldek_tad::stack::{stack::Stack, traits::stack_traits::StackTrait};
+/// 
+/// let mut stack = Stack::new();
+/// stack.push(1);
+/// stack.push(2);
+/// stack.push(3);
+///
+/// let collected: Vec<i32> = stack.into_iter().collect();
+/// assert_eq!(vec![3, 2, 1], collected); // top-first order
+/// ```
+///
+/// ## Using iterator adapters
+/// ```
+/// use eldek_tad::stack::{stack::Stack, traits::stack_traits::StackTrait};
+/// 
+/// let mut stack = Stack::new();
+/// stack.push(1);
+/// stack.push(2);
+/// stack.push(3);
+///
+/// let sum: i32 = stack.into_iter().sum();
+/// assert_eq!(6, sum);
+/// ```
 pub struct Stack<T:Clone> {
-    elements:LinkedList<T>,
-    size:usize,
+    elements:LinkedList<T>
 }
 
 impl <T:Clone+PartialEq> StackTrait<T> for Stack<T> {
     fn new()->Stack<T> {
-        return Stack { elements: LinkedList::new(), size: 0 }
+        return Stack { elements: LinkedList::new() }
     }
 
     fn from_vec(values: Vec<T>)->Stack<T> {
@@ -24,33 +100,19 @@ impl <T:Clone+PartialEq> StackTrait<T> for Stack<T> {
         self.elements.insert(value, 0).ok();
     }
 
-    fn pop(&mut self)->Result<T, String> {
-        if self.elements.size() == 0 {
-            return Err(String::from("Empty stack exception"));
-        }
-
-        let first = self.elements.get(0)?.clone();
-        let _ = self.elements.remove(0);
-        return Ok(first);
+    fn pop(&mut self)->Result<T, StackError> {
+        return self.elements.remove(0).map_err(|_| StackError::EmptyStack);
     }
 
-    fn peek(&self)->Result<&T, String> {
-        if self.elements.size() == 0 {
-            return Err(String::from("Empty stack exception"));
-        }
-        
+    fn peek(&self)->Result<&T, StackError> {
+        if self.is_empty(){return Err(StackError::EmptyStack);}
         let index = self.elements.size()-1;
-        let last = self.elements.get(index);
-        return last;
+        return self.elements.get(index).map_err(|_| StackError::EmptyStack);
     }
 
-    fn peek_mut(&mut self)->Result<&mut T, String> {
-        if self.elements.size() == 0 {
-            return Err(String::from("Empty stack exception"));
-        }
-        
+    fn peek_mut(&mut self)->Result<&mut T, StackError> {
         let index = self.elements.size()-1;
-        return self.elements.get_mut(index);
+        return self.elements.get_mut(index).map_err(|_| StackError::EmptyStack);
     }
 
     fn size(&self)->usize {

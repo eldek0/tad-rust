@@ -1,7 +1,12 @@
 [package]
-name = "tad-rust"
-version = "0.1.0"
+name = "eldek-tad"
+version = "0.9.0"
 edition = "2024"
+description = "A project for learning Abstract Data Types (ADTs) in Rust. Heavily inspired by Java's implementation."
+license = "MIT"
+authors = ["Eduardo Delfante <es.delfante@gmail.com>"]
+repository = "https://github.com/eldek0/tad-rust"
+readme = "README.md"
 
 [dependencies]
 thiserror = "2.0.18"

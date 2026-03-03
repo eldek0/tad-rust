@@ -4,7 +4,7 @@ mod test{
 
     #[test]
     fn create(){
-        let stack: Stack<i32> = Stack::new();
+        let _stack: Stack<i32> = Stack::new();
     }
 
     #[test]

@@ -7,7 +7,7 @@ pub struct Node<T>{
     pub is_end:bool
 }
 
-impl <T:Hash+Debug+PartialEq> Node<T>{
+impl <T:Hash+Debug+PartialEq+Clone> Node<T>{
     pub fn new() -> Self {
         Node {
             children: HashMap::new(1024),
