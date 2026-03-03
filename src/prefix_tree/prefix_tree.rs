@@ -245,8 +245,8 @@ impl<T: Hash + Debug + PartialEq + Clone> PrefixTree<T> {
         results
     }
 
-    fn from_string_to_chars(sequence: &str) -> impl IntoIterator<Item = T> where T: From<char>{
-        return sequence.chars().map(|c| T::from(c));
+    fn from_string_to_chars(sequence: &str) -> Vec<T> where T: From<char> {
+        sequence.chars().map(|c| T::from(c)).collect()
     }
 }
 
